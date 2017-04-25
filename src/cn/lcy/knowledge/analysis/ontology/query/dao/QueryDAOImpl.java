@@ -198,7 +198,7 @@ public class QueryDAOImpl implements QueryDAOI {
                          "prefix rdfs: <" + RDFS.getURI() + ">\n" +
                          "prefix owl: <" + OWL.getURI() + ">\n";
 
-         Query query = QueryFactory.create(  prefix + sparql );
+         Query query = QueryFactory.create( prefix + sparql );
          QueryExecution qexec = QueryExecutionFactory.create( query, model );
          QueryResult result = new QueryResult();
          try {

@@ -3,17 +3,30 @@ package cn.lcy.knowledge.analysis.sem.graph.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
+
 import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLSentence;
 import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLWord;
+import com.hankcs.hanlp.seg.common.Term;
 
 import cn.lcy.knowledge.analysis.enums.NounsTagEnum;
 import cn.lcy.knowledge.analysis.enums.VerbsTagEnum;
+import cn.lcy.knowledge.analysis.grammar.service.GrammarParserServiceImpl;
+import cn.lcy.knowledge.analysis.namedentity.service.NamedEntityServiceImpl;
+import cn.lcy.knowledge.analysis.ontology.query.service.QueryServiceImpl;
+import cn.lcy.knowledge.analysis.seg.service.WordSegmentationServiceImpl;
+import cn.lcy.knowledge.analysis.sem.model.Answer;
 import cn.lcy.knowledge.analysis.sem.model.AnswerStatement;
 import cn.lcy.knowledge.analysis.sem.model.PolysemantNamedEntity;
+import cn.lcy.knowledge.analysis.sem.model.PolysemantStatement;
+import cn.lcy.knowledge.analysis.sem.model.QueryResult;
 import cn.lcy.knowledge.analysis.sem.model.SemanticGraph;
 import cn.lcy.knowledge.analysis.sem.model.SemanticGraphEdge;
 import cn.lcy.knowledge.analysis.sem.model.SemanticGraphVertex;
 import cn.lcy.knowledge.analysis.sem.model.Word;
+import cn.lcy.knowledge.analysis.sem.model.WordSegmentResult;
+import cn.lcy.knowledge.analysis.vo.AnswerResultVO;
+import cn.lcy.knowledge.analysis.vo.PolysemantSituationVO;
 import cn.lcy.knowledge.analysis.vo.SemanticGraphNodeVO;
 import cn.lcy.knowledge.analysis.vo.SemanticGraphStatementVO;
 import cn.lcy.knowledge.analysis.vo.SemanticGraphVO;
@@ -46,138 +59,154 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 //	 * TODO 测试
 //	 * @param args
 //	 */
-//	public static void main(String args[]) {
-//		// 第一步：HanLP分词
-//		WordSegmentResult wordSegmentResult = new WordSegmentationServiceImpl().wordSegmentation("美人鱼的导演是谁？");
-//		List<Term> terms = wordSegmentResult.getTerms();
-//		List<PolysemantNamedEntity> polysemantNamedEntities = wordSegmentResult.getPolysemantEntities();
-//		List<Word> words = wordSegmentResult.getWords();
-//		System.out.println("HanLP分词的结果为:"+terms);
-//		
-//		// :查询本体库、取出命名实体的相关数据属性和对象属性
-//		//polysemantNamedEntities = new NamedEntityServiceImpl().fillNamedEntities(polysemantNamedEntities);
-//		
-//		// 第二步：使用HanLP进行依存句法分析
-//		CoNLLSentence coNLLsentence = new GrammarParserService().dependencyParser(terms);
-//		System.out.println("HanLP依存语法解析结果：\n" + coNLLsentence);
-//		
-//		// 第三步：语义图构建
-//		SemanticGraph semanticGraph = new SemanticGraphService().buildSemanticGraph(coNLLsentence, polysemantNamedEntities);
-//		if(semanticGraph.getAllVertices().size() == 0) { // 说明没有语义图算法无法解析该问句
-//			semanticGraph = new SemanticGraphService().buildBackUpSemanticGraph(words);
-//		}
-//		
-//		// 第四步：语义图断言构建
-//		List<AnswerStatement> semanticStatements = new QueryServiceImpl().createStatement(semanticGraph);
-//		
-//		// 第五步：获取歧义断言
-//		List<PolysemantStatement> polysemantStatements = new QueryServiceImpl().createPolysemantStatements(semanticStatements);
-//		
-//		List<PolysemantSituationVO> polysemantSituationVOs = new ArrayList<PolysemantSituationVO>();
-//		
-//		for(PolysemantStatement polysemantStatement : polysemantStatements) {
-//			// 第六步：实体消岐
-//			List<AnswerStatement> individualsDisambiguationStatements = new QueryServiceImpl().individualsDisambiguation(polysemantStatement.getAnswerStatements());
-//			List<AnswerStatement> individualsDisambiguationStatementsNew = new ArrayList<AnswerStatement>();
-//			for(AnswerStatement answerStatement : individualsDisambiguationStatements) {
-//				Word subject = answerStatement.getSubject();
-//				Word predicate = answerStatement.getPredicate();
-//				Word object = answerStatement.getObject();
-//				Word subjectNew = new Word();
-//				Word predicateNew = new Word();
-//				Word objectNew = new Word();
-//				BeanUtils.copyProperties(subject, subjectNew);
-//				BeanUtils.copyProperties(predicate, predicateNew);
-//				BeanUtils.copyProperties(object, objectNew);
-//				AnswerStatement answerStatementNew = new AnswerStatement();
-//				answerStatementNew.setSubject(subjectNew);
-//				answerStatementNew.setPredicate(predicateNew);
-//				answerStatementNew.setObject(objectNew);
-//				individualsDisambiguationStatementsNew.add(answerStatementNew);
-//			}
-//			
-//			// 第七步：谓语消岐
-//			List<AnswerStatement> predicateDisambiguationStatements = new QueryServiceImpl().predicateDisambiguation(individualsDisambiguationStatementsNew);
-//			List<AnswerStatement> predicateDisambiguationStatementsNew = new ArrayList<AnswerStatement>();
-//			for(AnswerStatement answerStatement : predicateDisambiguationStatements) {
-//				Word subject = answerStatement.getSubject();
-//				Word predicate = answerStatement.getPredicate();
-//				Word object = answerStatement.getObject();
-//				Word subjectNew = new Word();
-//				Word predicateNew = new Word();
-//				Word objectNew = new Word();
-//				BeanUtils.copyProperties(subject, subjectNew);
-//				BeanUtils.copyProperties(predicate, predicateNew);
-//				BeanUtils.copyProperties(object, objectNew);
-//				AnswerStatement answerStatementNew = new AnswerStatement();
-//				answerStatementNew.setSubject(subjectNew);
-//				answerStatementNew.setPredicate(predicateNew);
-//				answerStatementNew.setObject(objectNew);
-//				predicateDisambiguationStatementsNew.add(answerStatementNew);
-//			}
-//			
-//			// 第八步：构造用于Jena查询的断言
-//			List<AnswerStatement> queryStatements = new QueryServiceImpl().createQueryStatements(predicateDisambiguationStatementsNew);
-//			List<AnswerStatement> queryStatementsNew = new ArrayList<AnswerStatement>();
-//			for(AnswerStatement answerStatement : queryStatements) {
-//				Word subject = answerStatement.getSubject();
-//				Word predicate = answerStatement.getPredicate();
-//				Word object = answerStatement.getObject();
-//				Word subjectNew = new Word();
-//				Word predicateNew = new Word();
-//				Word objectNew = new Word();
-//				BeanUtils.copyProperties(subject, subjectNew);
-//				BeanUtils.copyProperties(predicate, predicateNew);
-//				BeanUtils.copyProperties(object, objectNew);
-//				AnswerStatement answerStatementNew = new AnswerStatement();
-//				answerStatementNew.setSubject(subjectNew);
-//				answerStatementNew.setPredicate(predicateNew);
-//				answerStatementNew.setObject(objectNew);
-//				queryStatementsNew.add(answerStatementNew);
-//			}
-//			
-//			// 第九步：根据查询断言构建查询语句
-//			List<String> SPARQLS = new QueryServiceImpl().createSparqls(queryStatementsNew);
-//			List<QueryResult> queryResults = new ArrayList<QueryResult>();
-//			for(String SPARQL : SPARQLS) {
-//				// 执行查询语句
-//				QueryResult queryResult = new QueryServiceImpl().queryOntology(SPARQL);
-//				System.out.println("********问句：" + SPARQL);
-//				for(Answer answer : queryResult.getAnswers()) {
-//					System.out.println("********答案："+answer.getContent());
-//				}
-//				
-//				queryResults.add(queryResult);
-//			}
-//			
-//			PolysemantSituationVO polysemantSituationVO = new PolysemantSituationVO();
-//			polysemantSituationVO.setPolysemantStatement(polysemantStatement);
-//			polysemantSituationVO.setSemanticStatements(semanticStatements);
-//			List<PolysemantNamedEntity> activePolysemantNamedEntities = new ArrayList<PolysemantNamedEntity>();
-//			int index = 0;
-//			for(AnswerStatement answerStatementNew : polysemantStatement.getAnswerStatements()) {
-//				PolysemantNamedEntity subjectActivePolysemantNamedEntity = answerStatementNew.getSubject().getActiveEntity();
-//				PolysemantNamedEntity objectActivePolysemantNamedEntity = answerStatementNew.getObject().getActiveEntity();
-//				if(index == 0) {
-//					activePolysemantNamedEntities.add(subjectActivePolysemantNamedEntity);
-//					activePolysemantNamedEntities.add(objectActivePolysemantNamedEntity);
-//				} else {
-//					activePolysemantNamedEntities.add(objectActivePolysemantNamedEntity);
-//				}
-//			}
-//			polysemantSituationVO.setActivePolysemantNamedEntities(activePolysemantNamedEntities);// 激活的命名实体
-//			polysemantSituationVO.setIndividualsDisambiguationStatements(individualsDisambiguationStatements);
-//			polysemantSituationVO.setPredicateDisambiguationStatements(predicateDisambiguationStatements);
-//			polysemantSituationVO.setQueryStatements(queryStatements);
-//			polysemantSituationVO.setSPARQLS(SPARQLS);
-//			polysemantSituationVO.setQueryResults(queryResults);
-//			polysemantSituationVOs.add(polysemantSituationVO);
-//		}
-//		
-//		AnswerResultVO answerResultVO = new AnswerResultVO(); // 结果的封装
-//		answerResultVO.setWords(words);
-//		answerResultVO.setPolysemantSituationVOs(polysemantSituationVOs);
-//	}
+	public static void main(String args[]) throws Exception {
+		// 第一步：HanLP分词
+		WordSegmentResult wordSegmentResult = WordSegmentationServiceImpl.getInstance().wordSegmentation("美人鱼？");
+		List<Term> terms = wordSegmentResult.getTerms();
+		List<PolysemantNamedEntity> polysemantNamedEntities = wordSegmentResult.getPolysemantEntities();
+		List<Word> words = wordSegmentResult.getWords();
+		System.out.println("HanLP分词的结果为:" + terms);
+		
+		// :查询本体库、取出命名实体的相关数据属性和对象属性
+		polysemantNamedEntities = NamedEntityServiceImpl.getInstance().fillNamedEntities(polysemantNamedEntities);
+		
+		// 第二步：使用HanLP进行依存句法分析
+		CoNLLSentence coNLLsentence = GrammarParserServiceImpl.getInstance().dependencyParser(terms);
+		System.out.println("HanLP依存语法解析结果：\n" + coNLLsentence);
+		
+		// 第三步：语义图构建
+		SemanticGraph semanticGraph = SemanticGraphServiceImpl.getInstance().buildSemanticGraph(coNLLsentence, polysemantNamedEntities);
+		if(semanticGraph.getAllVertices().size() == 0) { // 说明没有语义图算法无法解析该问句
+			semanticGraph = SemanticGraphServiceImpl.getInstance().buildBackUpSemanticGraph(words);
+		}
+		
+		// 第四步：语义图断言构建
+		List<AnswerStatement> semanticStatements = QueryServiceImpl.getInstance().createStatement(semanticGraph);
+		
+		// 第五步：获取歧义断言
+		List<PolysemantStatement> polysemantStatements = QueryServiceImpl.getInstance().createPolysemantStatements(semanticStatements);
+		
+		List<PolysemantSituationVO> polysemantSituationVOs = new ArrayList<PolysemantSituationVO>();
+		
+		for(PolysemantStatement polysemantStatement : polysemantStatements) {
+			// 第六步：实体消岐
+			List<AnswerStatement> individualsDisambiguationStatements = QueryServiceImpl.getInstance().individualsDisambiguation(polysemantStatement.getAnswerStatements());
+			List<AnswerStatement> individualsDisambiguationStatementsNew = new ArrayList<AnswerStatement>();
+			for(AnswerStatement answerStatement : individualsDisambiguationStatements) {
+				Word subject = answerStatement.getSubject();
+				Word predicate = answerStatement.getPredicate();
+				Word object = answerStatement.getObject();
+				Word subjectNew = new Word();
+				Word predicateNew = new Word();
+				Word objectNew = new Word();
+				BeanUtils.copyProperties(subject, subjectNew);
+				BeanUtils.copyProperties(predicate, predicateNew);
+				BeanUtils.copyProperties(object, objectNew);
+				AnswerStatement answerStatementNew = new AnswerStatement();
+				answerStatementNew.setSubject(subjectNew);
+				answerStatementNew.setPredicate(predicateNew);
+				answerStatementNew.setObject(objectNew);
+				individualsDisambiguationStatementsNew.add(answerStatementNew);
+			}
+			
+			// 第七步：谓语消岐
+			List<AnswerStatement> predicateDisambiguationStatements = QueryServiceImpl.getInstance().predicateDisambiguation(individualsDisambiguationStatementsNew);
+			List<AnswerStatement> predicateDisambiguationStatementsNew = new ArrayList<AnswerStatement>();
+			for(AnswerStatement answerStatement : predicateDisambiguationStatements) {
+				Word subject = answerStatement.getSubject();
+				Word predicate = answerStatement.getPredicate();
+				Word object = answerStatement.getObject();
+				Word subjectNew = new Word();
+				Word predicateNew = new Word();
+				Word objectNew = new Word();
+				BeanUtils.copyProperties(subject, subjectNew);
+				BeanUtils.copyProperties(predicate, predicateNew);
+				BeanUtils.copyProperties(object, objectNew);
+				AnswerStatement answerStatementNew = new AnswerStatement();
+				answerStatementNew.setSubject(subjectNew);
+				answerStatementNew.setPredicate(predicateNew);
+				answerStatementNew.setObject(objectNew);
+				predicateDisambiguationStatementsNew.add(answerStatementNew);
+			}
+			
+			// 第八步：构造用于Jena查询的断言
+			List<AnswerStatement> queryStatements = QueryServiceImpl.getInstance().createQueryStatements(predicateDisambiguationStatementsNew);
+
+			List<AnswerStatement> queryStatementsNew = new ArrayList<AnswerStatement>();
+			for(AnswerStatement answerStatement : queryStatements) {
+				Word subject = answerStatement.getSubject();
+				Word predicate = answerStatement.getPredicate();
+				Word object = answerStatement.getObject();
+				Word subjectNew = new Word();
+				Word predicateNew = new Word();
+				Word objectNew = new Word();
+				BeanUtils.copyProperties(subject, subjectNew);
+				BeanUtils.copyProperties(predicate, predicateNew);
+				BeanUtils.copyProperties(object, objectNew);
+				AnswerStatement answerStatementNew = new AnswerStatement();
+				answerStatementNew.setSubject(subjectNew);
+				answerStatementNew.setPredicate(predicateNew);
+				answerStatementNew.setObject(objectNew);
+				queryStatementsNew.add(answerStatementNew);
+			}
+			
+			// 第九步：根据查询断言构建查询语句
+			List<String> SPARQLS = QueryServiceImpl.getInstance().createSparqls(queryStatementsNew);
+			List<QueryResult> queryResults = new ArrayList<QueryResult>();
+			for(String SPARQL : SPARQLS) {
+				// 执行查询语句
+				QueryResult queryResult = QueryServiceImpl.getInstance().queryOntology(SPARQL);
+				List<Answer> answersNew = new ArrayList<Answer>();
+				for(Answer answer : queryResult.getAnswers()) {
+					String[] uuidArr = answer.getContent().split(":");
+					String uuid = null;
+					if(uuidArr.length > 1) {
+						uuid = uuidArr[1];
+					} else {
+						uuid = uuidArr[0];
+					}
+					if(uuidArr.length <= 1 || answer.getContent().length() != 33) {
+						answersNew.add(answer);
+						System.out.println("答案:" + answer.getContent());
+					} else {
+						String comment = QueryServiceImpl.getInstance().queryIndividualComment(uuid);
+						Answer answerNew = new Answer();
+						answerNew.setContent(comment);
+						answersNew.add(answerNew);
+						System.out.println("答案：" + answer.getContent());
+					}
+				}
+				queryResult.setAnswers(answersNew);
+				queryResults.add(queryResult);
+			}
+			
+			PolysemantSituationVO polysemantSituationVO = new PolysemantSituationVO();
+			polysemantSituationVO.setPolysemantStatement(polysemantStatement);
+			polysemantSituationVO.setSemanticStatements(semanticStatements);
+			List<PolysemantNamedEntity> activePolysemantNamedEntities = new ArrayList<PolysemantNamedEntity>();
+			int index = 0;
+			for(AnswerStatement answerStatementNew : polysemantStatement.getAnswerStatements()) {
+				PolysemantNamedEntity subjectActivePolysemantNamedEntity = answerStatementNew.getSubject().getActiveEntity();
+				PolysemantNamedEntity objectActivePolysemantNamedEntity = answerStatementNew.getObject().getActiveEntity();
+				if(index == 0) {
+					activePolysemantNamedEntities.add(subjectActivePolysemantNamedEntity);
+					activePolysemantNamedEntities.add(objectActivePolysemantNamedEntity);
+				} else {
+					activePolysemantNamedEntities.add(objectActivePolysemantNamedEntity);
+				}
+			}
+			polysemantSituationVO.setActivePolysemantNamedEntities(activePolysemantNamedEntities);// 激活的命名实体
+			polysemantSituationVO.setIndividualsDisambiguationStatements(individualsDisambiguationStatements);
+			polysemantSituationVO.setPredicateDisambiguationStatements(predicateDisambiguationStatements);
+			polysemantSituationVO.setQueryStatements(queryStatements);
+			polysemantSituationVO.setSPARQLS(SPARQLS);
+			polysemantSituationVO.setQueryResults(queryResults);
+			polysemantSituationVOs.add(polysemantSituationVO);
+		}
+		AnswerResultVO answerResultVO = new AnswerResultVO(); // 结果的封装
+		answerResultVO.setWords(words);
+		answerResultVO.setPolysemantSituationVOs(polysemantSituationVOs);
+	}
 	
 	/**
 	 * 构建语义图算法

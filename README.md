@@ -3,4 +3,8 @@
 
 ## 使用
 
+
 ## 原理
+整体框架图:
+![image](https://github.com/YueHub/answer-knowledge-analysis/blob/master/docs/语义解析模块框架图.png)
+待续...
