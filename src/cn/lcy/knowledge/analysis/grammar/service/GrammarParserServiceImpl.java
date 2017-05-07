@@ -26,9 +26,9 @@ public class GrammarParserServiceImpl implements GrammarParserServiceI {
 	 * @return
 	 */
 	public static GrammarParserServiceI getInstance() {
-		if(singleInstance == null) {
+		if (singleInstance == null) {
 			synchronized (GrammarParserServiceImpl.class) {
-				if(singleInstance == null) {
+				if (singleInstance == null) {
 					singleInstance = new GrammarParserServiceImpl();
 				}
 			}
@@ -52,8 +52,8 @@ public class GrammarParserServiceImpl implements GrammarParserServiceI {
 	@Override
 	public DependencyVO getDependencyGraphVO(CoNLLSentence coNLLsentence) {
 		DependencyVO dependencyVO = new DependencyVO();
-		if(coNLLsentence != null) {
-			for(CoNLLWord dependency : coNLLsentence) {
+		if (coNLLsentence != null) {
+			for (CoNLLWord dependency : coNLLsentence) {
 				DependencyNode dependencyNode = new DependencyNode();
 				Arg arg = new Arg();
 				arg.setLength(0);

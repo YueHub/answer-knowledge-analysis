@@ -44,9 +44,9 @@ public class QueryServiceImpl implements QueryServiceI {
 	 * @return
 	 */
 	public static QueryServiceI getInstance() {
-		if(singleInstance == null) {
+		if (singleInstance == null) {
 			synchronized (QueryServiceImpl.class) {
-				if(singleInstance == null) {
+				if (singleInstance == null) {
 					singleInstance = new QueryServiceImpl();
 				}
 			}
@@ -64,12 +64,12 @@ public class QueryServiceImpl implements QueryServiceI {
 		// 陈述集合
 		List<AnswerStatement> answerStatements = new ArrayList<AnswerStatement>();
 		// 解析语义图  构造陈述
-		for(SemanticGraphVertex sourceVertex : semanticGraph.getAllVertices()) {
-	    	for(SemanticGraphEdge edge : semanticGraph.getOutgoingEdges(sourceVertex)) {
+		for (SemanticGraphVertex sourceVertex : semanticGraph.getAllVertices()) {
+	    	for (SemanticGraphEdge edge : semanticGraph.getOutgoingEdges(sourceVertex)) {
 	    		SemanticGraphVertex destVertex = new SemanticGraphVertex();
-	    		  for(SemanticGraphVertex v : semanticGraph.getAllVertices()) {
-	    			  for(SemanticGraphEdge e: semanticGraph.getIncomingEdges(v)) {
-	    				  if(e.equals(edge)) {
+	    		  for (SemanticGraphVertex v : semanticGraph.getAllVertices()) {
+	    			  for (SemanticGraphEdge e: semanticGraph.getIncomingEdges(v)) {
+	    				  if (e.equals(edge)) {
 	    					  destVertex = v;
 	    				  }
 	    			  }
@@ -100,22 +100,22 @@ public class QueryServiceImpl implements QueryServiceI {
 		Map<Integer, Integer> nums = new LinkedHashMap<Integer, Integer>();
 		// 第一步：记录每个实体的同名实体的个数
 		int index = 0;
-		for(AnswerStatement answerStatement : answerStatements) {
-			if(index == 0) {
+		for (AnswerStatement answerStatement : answerStatements) {
+			if (index == 0) {
 				Word subject = answerStatement.getSubject();
 				Word object = answerStatement.getObject();
 				int subjectPolysemantNamedEntitiesSize = subject.getPolysemantNamedEntities().size();
 				int objectPolysemantNamedEntitiesSize = object.getPolysemantNamedEntities().size();
-				if(subjectPolysemantNamedEntitiesSize != 0) {
+				if (subjectPolysemantNamedEntitiesSize != 0) {
 					nums.put(subject.getPosition(), subjectPolysemantNamedEntitiesSize);
 				}
-				if(objectPolysemantNamedEntitiesSize != 0) {
+				if (objectPolysemantNamedEntitiesSize != 0) {
 					nums.put(object.getPosition(), objectPolysemantNamedEntitiesSize);
 				}
 			} else {
 				Word object = answerStatement.getObject();
 				int objectPolysemantNamedEntitiesSize = object.getPolysemantNamedEntities().size();
-				if(objectPolysemantNamedEntitiesSize != 0) {
+				if (objectPolysemantNamedEntitiesSize != 0) {
 					nums.put(object.getPosition(), objectPolysemantNamedEntitiesSize);
 				}
 			}
@@ -124,16 +124,16 @@ public class QueryServiceImpl implements QueryServiceI {
 		
 		int counter[] = new int[nums.size()];
 		int loopLength = 1;
-		for(Entry<Integer, Integer> num : nums.entrySet()) {
+		for (Entry<Integer, Integer> num : nums.entrySet()) {
 			loopLength *= num.getValue();
 		}
 		
 		
 		int counterIndex = nums.size() - 1;
-		for(int i = 0; i < loopLength; i++) {
+		for (int i = 0; i < loopLength; i++) {
 			PolysemantStatement polysemantStatement = new PolysemantStatement();
 			List<AnswerStatement> newAnswerStatements = new ArrayList<AnswerStatement>();
-			for(AnswerStatement answerStatement : answerStatements) {
+			for (AnswerStatement answerStatement : answerStatements) {
 				Word subject = answerStatement.getSubject();
 				Word predicate = answerStatement.getPredicate();
 				Word object = answerStatement.getObject();
@@ -150,7 +150,7 @@ public class QueryServiceImpl implements QueryServiceI {
 				}
 				
 				List<PolysemantNamedEntity> subjectPolysemantNamedEntities = new ArrayList<PolysemantNamedEntity>();
-				for(PolysemantNamedEntity polysemantNamedEntity : subject.getPolysemantNamedEntities()) {
+				for (PolysemantNamedEntity polysemantNamedEntity : subject.getPolysemantNamedEntities()) {
 					PolysemantNamedEntity polysemantNamedEntityNew  = new PolysemantNamedEntity();
 					try {
 						BeanUtils.copyProperties(polysemantNamedEntityNew, polysemantNamedEntity);
@@ -171,7 +171,7 @@ public class QueryServiceImpl implements QueryServiceI {
 				predicateNew.setPolysemantNamedEntities(predicatePolysemantNamedEntities);*/
 				
 				List<PolysemantNamedEntity> objectPolysemantNamedEntities = new ArrayList<PolysemantNamedEntity>();
-				for(PolysemantNamedEntity polysemantNamedEntity : object.getPolysemantNamedEntities()) {
+				for (PolysemantNamedEntity polysemantNamedEntity : object.getPolysemantNamedEntities()) {
 					PolysemantNamedEntity polysemantNamedEntityNew  = new PolysemantNamedEntity();
 					try {
 						BeanUtils.copyProperties(polysemantNamedEntityNew, polysemantNamedEntity);
@@ -192,11 +192,11 @@ public class QueryServiceImpl implements QueryServiceI {
 				
 				
 				int subscript = 0;
-				for(Entry<Integer, Integer> num : nums.entrySet()) {
-					if(num.getKey() == subjectNew.getPosition()) {
+				for (Entry<Integer, Integer> num : nums.entrySet()) {
+					if (num.getKey() == subjectNew.getPosition()) {
 						subjectNew.active(subjectNew.getPolysemantNamedEntities().get(counter[subscript]));
 					}
-					if(num.getKey() == objectNew.getPosition()) {
+					if (num.getKey() == objectNew.getPosition()) {
 						objectNew.active(objectNew.getPolysemantNamedEntities().get(counter[subscript]));
 					}
 					++subscript;
@@ -211,14 +211,14 @@ public class QueryServiceImpl implements QueryServiceI {
 	}
 	
 	public void handle(Map<Integer, Integer> nums,int counter[], int counterIndex) {
-		if(counterIndex < 0) {
+		if (counterIndex < 0) {
 			return ;
 		}
         counter[counterIndex]++;
         int index = 0;
         int length = 0;
-        for(Entry<Integer, Integer> num : nums.entrySet()) {
-        	if(index == counterIndex) {
+        for (Entry<Integer, Integer> num : nums.entrySet()) {
+        	if (index == counterIndex) {
         		length = num.getValue();
         	}
         	++index;
@@ -239,12 +239,12 @@ public class QueryServiceImpl implements QueryServiceI {
     public List<AnswerStatement> individualsDisambiguation(List<AnswerStatement> answerStatements) {
     	List<AnswerStatement> individualsDisambiguationStatements = new ArrayList<AnswerStatement>();
     	
-    	for(AnswerStatement individualsDisambiguationStatement : answerStatements) {
+    	for (AnswerStatement individualsDisambiguationStatement : answerStatements) {
     		
     		
-    		if(individualsDisambiguationStatement.getSubject().getActiveEntity() != null) {
+    		if (individualsDisambiguationStatement.getSubject().getActiveEntity() != null) {
     			// 如果主语是问号的话 就不需要进行实体消岐了
-        		if(individualsDisambiguationStatement.getSubject().getPosition() < 1024) {
+        		if (individualsDisambiguationStatement.getSubject().getPosition() < 1024) {
     	    		// 查询本体库中是否有该实体
     	    		// TODO 改为注入 这里是为测试方便
     	    		// boolean individualExist = new JenaDAOImpl().individualExist(myStatement.getSubject().LEMMA);
@@ -254,8 +254,8 @@ public class QueryServiceImpl implements QueryServiceI {
     				
     				String individualDisambiguationName = null;
     				String sameEntityUUID = null;
-    				if(individualsDisambiguationStatement.getSubject().getActiveEntity() != null) {
-    					if(individualsDisambiguationStatement.getSubject().getActiveEntity().getIsAliases().equals("0")) { // 如果该实体为实体别名
+    				if (individualsDisambiguationStatement.getSubject().getActiveEntity() != null) {
+    					if (individualsDisambiguationStatement.getSubject().getActiveEntity().getIsAliases().equals("0")) { // 如果该实体为实体别名
     						sameEntityUUID = queryDAO.querySameIndividual(individualsDisambiguationStatement.getSubject().getActiveEntity().getUUID());
     					}
     					
@@ -281,7 +281,7 @@ public class QueryServiceImpl implements QueryServiceI {
     public List<AnswerStatement> predicateDisambiguation(List<AnswerStatement> answerStatements) {
     	List<AnswerStatement> predicateDisambiguationStatements = new ArrayList<AnswerStatement>();
     	int index = 0;
-    	for(AnswerStatement predicateDisambiguationStatement : answerStatements) {
+    	for (AnswerStatement predicateDisambiguationStatement : answerStatements) {
     		Long minDistance = 9223372036854775807L;
     		 // 问句中的谓语
 	        String predicateOld = predicateDisambiguationStatement.getPredicate().getName();
@@ -293,7 +293,7 @@ public class QueryServiceImpl implements QueryServiceI {
     		// TODO 改为注入 这里是为测试方便 
     		// 如果主语不是问号 则进行获取主语的相关断言
     		List<Statement> statements = null;
-    		if(predicateDisambiguationStatement.getSubject().getPosition() < 1024) {
+    		if (predicateDisambiguationStatement.getSubject().getPosition() < 1024) {
     			String subjectUUID = predicateDisambiguationStatement.getSubject().getDisambiguationUUID();
     			statements = queryDAO.getStatementsBySubject(subjectUUID);
     		} else {
@@ -341,21 +341,21 @@ public class QueryServiceImpl implements QueryServiceI {
     		}
 	        
 	        // 迭代所有以Subject为主语的短语 寻找最相似的谓语
-    		for(Statement statement : statements) {
+    		for (Statement statement : statements) {
     			// 本体库中的谓语
     			String predicate = statement.getPredicate().getURI().split("#")[1];
         		// 计算句子中谓语和本体库中谓语的语义相似度
         		String[] predicateArray = predicate.split("有");
-        		if(predicateArray.length >= 2) {
+        		if (predicateArray.length >= 2) {
         			Long distance = CoreSynonymDictionary.distance(predicateOld, predicateArray[1]);
-        			if(distance < minDistance) {
+        			if (distance < minDistance) {
         				minDistance = distance;
         				mostSimilarPredicate = predicateArray[1];
         			}
         			System.out.println(predicateOld + " 和  " + predicateArray[1] + ":" + distance);
         		} else {
         			Long distance = CoreSynonymDictionary.distance(predicateOld, predicateArray[0]);
-        			if(distance < minDistance) {
+        			if (distance < minDistance) {
         				minDistance = distance;
         				mostSimilarPredicate = predicateArray[0];
         			}
@@ -381,10 +381,10 @@ public class QueryServiceImpl implements QueryServiceI {
 	public List<AnswerStatement> createQueryStatements(List<AnswerStatement> answerStatements) {
     	List<AnswerStatement> queryStatements = new ArrayList<AnswerStatement>();
     	int i = 0;
-    	for(AnswerStatement answerStatement : answerStatements) {
+    	for (AnswerStatement answerStatement : answerStatements) {
     		answerStatement.getSubject().setDisambiguationName("mymo:" + answerStatement.getSubject().getDisambiguationUUID());
     		
-    		if(NounsTagEnum.isIncludeEnumElement(answerStatement.getPredicate().getCpostag())) {
+    		if (NounsTagEnum.isIncludeEnumElement(answerStatement.getPredicate().getCpostag())) {
     			answerStatement.getPredicate().setDisambiguationName("mymo:" + "有" + answerStatement.getPredicate().getDisambiguationName());
     		} else {
     			answerStatement.getPredicate().setDisambiguationName("mymo:" + answerStatement.getPredicate().getDisambiguationName());
@@ -394,7 +394,7 @@ public class QueryServiceImpl implements QueryServiceI {
     		String preMask = "?" + (char)(ch - 1);
     		String mask = "?" + (char)ch;
     		answerStatement.getObject().setDisambiguationName(mask);
-    		if(i > 0) {
+    		if (i > 0) {
     			answerStatement.getSubject().setDisambiguationName(preMask);
     		}
     		queryStatements.add(answerStatement);
@@ -412,9 +412,9 @@ public class QueryServiceImpl implements QueryServiceI {
 		AnswerStatement lastStatement = answerStatements.get(size - 1);
 		String queryMask = lastStatement.getObject().getDisambiguationName();
 		String SPARQL = "SELECT " + queryMask + "  WHERE {\n";
-		for(AnswerStatement answerStatement : answerStatements) {
+		for (AnswerStatement answerStatement : answerStatements) {
 			// 如果谓语是名词
-			if(NounsTagEnum.isIncludeEnumElement(answerStatement.getPredicate().getCpostag())) {
+			if (NounsTagEnum.isIncludeEnumElement(answerStatement.getPredicate().getCpostag())) {
 				SPARQL += answerStatement.getSubject().getDisambiguationName() + "  " + answerStatement.getPredicate().getDisambiguationName()  + "  " + answerStatement.getObject().getDisambiguationName() + ".\n";
 			} else {
 				SPARQL += answerStatement.getSubject().getDisambiguationName() + "  " + answerStatement.getPredicate().getDisambiguationName()  + "  " + answerStatement.getObject().getDisambiguationName() + ".\n";
@@ -433,9 +433,9 @@ public class QueryServiceImpl implements QueryServiceI {
     	List<String> SPARQLS = new ArrayList<String>();
     	
     	int size = answerStatements.size();
-    	for(int num = 0; num < size; num++) {
+    	for (int num = 0; num < size; num++) {
     		List<AnswerStatement> statements = new ArrayList<AnswerStatement>();
-    		for(int i = 0; i <= num; i++) {
+    		for (int i = 0; i <= num; i++) {
     			statements.add(answerStatements.get(i));
     		}
     		String SPARQL = this.createSparql(statements);

@@ -43,22 +43,22 @@ public class IndividualsDictUtil {
     	// 电影集合
     	List<String> movies = new ArrayList<String>();
     	int size = 0;
-    	for(Iterator<Individual> iter = model.listIndividuals(); iter.hasNext();) {
+    	for (Iterator<Individual> iter = model.listIndividuals(); iter.hasNext();) {
     		// 实体
     		Individual individual = iter.next();
     		// 实体的最终最高级父类
     		OntClass superClass = individual.getOntClass();
-    		if(superClass != null) {
+    		if (superClass != null) {
     			while(superClass.getSuperClass() != null) {
         			superClass = superClass.getSuperClass();
         		}
     		}
-    		if(superClass.getLocalName().equals("人")) {
+    		if (superClass.getLocalName().equals("人")) {
     			String name = individual.getLocalName();
     			String att = " nr 100";
     			people.add(name + att);
     			List<String> sameIndividuals = jenaUtil.querySameIndividuals(individual.getLocalName());
-        		for(String sameIndividual : sameIndividuals) {
+        		for (String sameIndividual : sameIndividuals) {
         			people.add(sameIndividual + att);
         			++size;
         		}

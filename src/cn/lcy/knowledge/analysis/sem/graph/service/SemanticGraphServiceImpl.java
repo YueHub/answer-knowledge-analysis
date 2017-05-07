@@ -45,9 +45,9 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 	 * @return
 	 */
 	public static SemanticGraphServiceI getInstance() {
-		if(singleInstance == null) {
+		if (singleInstance == null) {
 			synchronized (SemanticGraphServiceImpl.class) {
-				if(singleInstance == null) {
+				if (singleInstance == null) {
 					singleInstance = new SemanticGraphServiceImpl();
 				}
 			}
@@ -76,7 +76,7 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 		
 		// 第三步：语义图构建
 		SemanticGraph semanticGraph = SemanticGraphServiceImpl.getInstance().buildSemanticGraph(coNLLsentence, polysemantNamedEntities);
-		if(semanticGraph.getAllVertices().size() == 0) { // 说明没有语义图算法无法解析该问句
+		if (semanticGraph.getAllVertices().size() == 0) { // 说明没有语义图算法无法解析该问句
 			semanticGraph = SemanticGraphServiceImpl.getInstance().buildBackUpSemanticGraph(words);
 		}
 		
@@ -88,11 +88,11 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 		
 		List<PolysemantSituationVO> polysemantSituationVOs = new ArrayList<PolysemantSituationVO>();
 		
-		for(PolysemantStatement polysemantStatement : polysemantStatements) {
+		for (PolysemantStatement polysemantStatement : polysemantStatements) {
 			// 第六步：实体消岐
 			List<AnswerStatement> individualsDisambiguationStatements = QueryServiceImpl.getInstance().individualsDisambiguation(polysemantStatement.getAnswerStatements());
 			List<AnswerStatement> individualsDisambiguationStatementsNew = new ArrayList<AnswerStatement>();
-			for(AnswerStatement answerStatement : individualsDisambiguationStatements) {
+			for (AnswerStatement answerStatement : individualsDisambiguationStatements) {
 				Word subject = answerStatement.getSubject();
 				Word predicate = answerStatement.getPredicate();
 				Word object = answerStatement.getObject();
@@ -112,7 +112,7 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 			// 第七步：谓语消岐
 			List<AnswerStatement> predicateDisambiguationStatements = QueryServiceImpl.getInstance().predicateDisambiguation(individualsDisambiguationStatementsNew);
 			List<AnswerStatement> predicateDisambiguationStatementsNew = new ArrayList<AnswerStatement>();
-			for(AnswerStatement answerStatement : predicateDisambiguationStatements) {
+			for (AnswerStatement answerStatement : predicateDisambiguationStatements) {
 				Word subject = answerStatement.getSubject();
 				Word predicate = answerStatement.getPredicate();
 				Word object = answerStatement.getObject();
@@ -133,7 +133,7 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 			List<AnswerStatement> queryStatements = QueryServiceImpl.getInstance().createQueryStatements(predicateDisambiguationStatementsNew);
 
 			List<AnswerStatement> queryStatementsNew = new ArrayList<AnswerStatement>();
-			for(AnswerStatement answerStatement : queryStatements) {
+			for (AnswerStatement answerStatement : queryStatements) {
 				Word subject = answerStatement.getSubject();
 				Word predicate = answerStatement.getPredicate();
 				Word object = answerStatement.getObject();
@@ -153,19 +153,19 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 			// 第九步：根据查询断言构建查询语句
 			List<String> SPARQLS = QueryServiceImpl.getInstance().createSparqls(queryStatementsNew);
 			List<QueryResult> queryResults = new ArrayList<QueryResult>();
-			for(String SPARQL : SPARQLS) {
+			for (String SPARQL : SPARQLS) {
 				// 执行查询语句
 				QueryResult queryResult = QueryServiceImpl.getInstance().queryOntology(SPARQL);
 				List<Answer> answersNew = new ArrayList<Answer>();
-				for(Answer answer : queryResult.getAnswers()) {
+				for (Answer answer : queryResult.getAnswers()) {
 					String[] uuidArr = answer.getContent().split(":");
 					String uuid = null;
-					if(uuidArr.length > 1) {
+					if (uuidArr.length > 1) {
 						uuid = uuidArr[1];
 					} else {
 						uuid = uuidArr[0];
 					}
-					if(uuidArr.length <= 1 || answer.getContent().length() != 33) {
+					if (uuidArr.length <= 1 || answer.getContent().length() != 33) {
 						answersNew.add(answer);
 						System.out.println("答案:" + answer.getContent());
 					} else {
@@ -185,10 +185,10 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 			polysemantSituationVO.setSemanticStatements(semanticStatements);
 			List<PolysemantNamedEntity> activePolysemantNamedEntities = new ArrayList<PolysemantNamedEntity>();
 			int index = 0;
-			for(AnswerStatement answerStatementNew : polysemantStatement.getAnswerStatements()) {
+			for (AnswerStatement answerStatementNew : polysemantStatement.getAnswerStatements()) {
 				PolysemantNamedEntity subjectActivePolysemantNamedEntity = answerStatementNew.getSubject().getActiveEntity();
 				PolysemantNamedEntity objectActivePolysemantNamedEntity = answerStatementNew.getObject().getActiveEntity();
-				if(index == 0) {
+				if (index == 0) {
 					activePolysemantNamedEntities.add(subjectActivePolysemantNamedEntity);
 					activePolysemantNamedEntities.add(objectActivePolysemantNamedEntity);
 				} else {
@@ -222,9 +222,9 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
         // 最后处理的边
         List<SemanticGraphEdge> lastProcessEdges = new ArrayList<SemanticGraphEdge>();
         // 迭代所有的单词
-		for(CoNLLWord coNLLWord : coNLLsentence) {
+		for (CoNLLWord coNLLWord : coNLLsentence) {
 			// 如果该结点是名词性结点 isNounWord
-			if(this.isNounWord(coNLLWord.CPOSTAG)) {
+			if (this.isNounWord(coNLLWord.CPOSTAG)) {
 				// 创建一个语义图结点
 				SemanticGraphVertex semanticGraphVertex = new SemanticGraphVertex();
 				Word vertexWord = this.convertedIntoWord(coNLLWord, polysemantNamedEntities);
@@ -234,7 +234,7 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 			}
 			
 			// 如果该结点是动词性结点
-			if(this.isVerbWord(coNLLWord.POSTAG)) {
+			if (this.isVerbWord(coNLLWord.POSTAG)) {
 				// 创建一个语义图边对象
 				SemanticGraphEdge semanticGraphEdge = new SemanticGraphEdge();
 				Word edgeWord = this.convertedIntoWord(coNLLWord, polysemantNamedEntities);
@@ -244,7 +244,7 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 				// 宾语
 				SemanticGraphVertex objectVertex = null;
 				// 迭代所有的依存关系
-				for(CoNLLWord coNLLWord2 : coNLLsentence) {
+				for (CoNLLWord coNLLWord2 : coNLLsentence) {
 					// 出发节点 word.LEMMA
                     // 依存关系
 					// 结束结点 word.HEAD.LEMMA
@@ -256,13 +256,13 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
                             case "IOB":
                             case "ATT":
                             	// 迭代名词性结点集合
-                            	if(this.isInclude(semanticGraphVertexs, coNLLWord2.ID)) {
-                            		for(SemanticGraphVertex semanticGraphVertex : semanticGraphVertexs) {
-                            			if(semanticGraphVertex.getWord().getPosition() == coNLLWord2.ID) {
+                            	if (this.isInclude(semanticGraphVertexs, coNLLWord2.ID)) {
+                            		for (SemanticGraphVertex semanticGraphVertex : semanticGraphVertexs) {
+                            			if (semanticGraphVertex.getWord().getPosition() == coNLLWord2.ID) {
                             				objectVertex = semanticGraphVertex;
                             			}
                             		}
-                            	} else if(this.isNounWord(coNLLWord2.CPOSTAG)) {
+                            	} else if (this.isNounWord(coNLLWord2.CPOSTAG)) {
                         			// 如果名词性结点集合中还没有该名词 则创建一个新的名词性结点
                             		objectVertex = new SemanticGraphVertex();
                             		Word vertexWord = this.convertedIntoWord(coNLLWord2, polysemantNamedEntities);
@@ -271,9 +271,9 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
                                 break;
                             // 找出该谓语的主语
                             case "SBV":
-                            	if(this.isInclude(semanticGraphVertexs, coNLLWord2.ID)) {
-                            		for(SemanticGraphVertex semanticGraphVertex : semanticGraphVertexs) {
-                                		if(semanticGraphVertex.getWord().getPosition() == coNLLWord2.ID) {
+                            	if (this.isInclude(semanticGraphVertexs, coNLLWord2.ID)) {
+                            		for (SemanticGraphVertex semanticGraphVertex : semanticGraphVertexs) {
+                                		if (semanticGraphVertex.getWord().getPosition() == coNLLWord2.ID) {
                                 			subjectVertex = semanticGraphVertex;
                                 		}
                             		}
@@ -296,11 +296,11 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
                     }
                 }
 				// 如果主语和宾语都为空
-				if(subjectVertex == null && objectVertex == null) {
+				if (subjectVertex == null && objectVertex == null) {
 					// 将该主语和宾语都为空的边加入到待处理集合中
 					lastProcessEdges.add(semanticGraphEdge);
 				}
-				else if(subjectVertex == null) {
+				else if (subjectVertex == null) {
 					subjectVertex = new SemanticGraphVertex();
 					// 问号 ID为-1 
 					int ch = 'a' + index;
@@ -311,7 +311,7 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
             		subjectVertex.setWord(this.convertedIntoWord(maskWord, polysemantNamedEntities));
             		++index;
 				}
-				else if(objectVertex == null) {
+				else if (objectVertex == null) {
 					objectVertex = new SemanticGraphVertex();
 					// 问号 ID为-1 
 					int ch = 'a' + index;
@@ -329,9 +329,9 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 		}
 		
 		
-		if(index > 0 ) {
+		if (index > 0 ) {
 			// 处理主宾为空的边
-			for(SemanticGraphEdge semanticGraphEdge : lastProcessEdges) {
+			for (SemanticGraphEdge semanticGraphEdge : lastProcessEdges) {
 				SemanticGraphVertex subjectVertex = new SemanticGraphVertex();
 				SemanticGraphVertex objectVertex = new SemanticGraphVertex();
 				int lastMaskIndex = index - 1;
@@ -354,16 +354,16 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 		}
 		
 		// 创建修饰名词和被修饰名词之间的联系
-		for(CoNLLWord word : coNLLsentence) {
+		for (CoNLLWord word : coNLLsentence) {
 			// 出发节点 word.LEMMA
             // 依存关系
             String reln = word.DEPREL;
             // 结束结点 word.HEAD.LEMMA
             switch (reln) {
             	case "ATT":
-            		if(this.isInclude(semanticGraphVertexs, word.ID) && this.isInclude(semanticGraphVertexs, word.HEAD.ID)) {
+            		if (this.isInclude(semanticGraphVertexs, word.ID) && this.isInclude(semanticGraphVertexs, word.HEAD.ID)) {
             			// 词性为名词性变量而不是命名实体
-            			if(this.isNounWord(word.HEAD.CPOSTAG)) {
+            			if (this.isNounWord(word.HEAD.CPOSTAG)) {
             				SemanticGraphVertex sourceVertex = null;
             				SemanticGraphVertex destVertex = null;
             				SemanticGraphEdge edge = new SemanticGraphEdge();
@@ -371,17 +371,17 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
             				Word edgeWord = this.convertedIntoWord(coNLLWord, polysemantNamedEntities);
             				edge.setWord(edgeWord);
             				// 修饰词结点
-            				if(this.isInclude(semanticGraphVertexs, word.ID)) {
-            					for(SemanticGraphVertex semanticGraphVertex : semanticGraphVertexs) {
-                					if(semanticGraphVertex.getWord().getPosition() == word.ID) {
+            				if (this.isInclude(semanticGraphVertexs, word.ID)) {
+            					for (SemanticGraphVertex semanticGraphVertex : semanticGraphVertexs) {
+                					if (semanticGraphVertex.getWord().getPosition() == word.ID) {
                 						sourceVertex = semanticGraphVertex;
                 					}
                 				}
             				}
             				// 被修饰词结点
-            				if(this.isInclude(semanticGraphVertexs, word.HEAD.ID)) {
-            					for(SemanticGraphVertex semanticGraphVertex : semanticGraphVertexs) {
-                					if(semanticGraphVertex.getWord().getPosition() == word.HEAD.ID) {
+            				if (this.isInclude(semanticGraphVertexs, word.HEAD.ID)) {
+            					for (SemanticGraphVertex semanticGraphVertex : semanticGraphVertexs) {
+                					if (semanticGraphVertex.getWord().getPosition() == word.HEAD.ID) {
                 						destVertex = semanticGraphVertex;
                 					}
                 				}
@@ -398,8 +398,8 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 	
 	public SemanticGraph buildBackUpSemanticGraph(List<Word> words) {
 		SemanticGraph semanticGraph = new SemanticGraph();
-		for(Word word : words) {
-			for(PolysemantNamedEntity polysemantNamedEntity : word.getPolysemantNamedEntities()) {
+		for (Word word : words) {
+			for (PolysemantNamedEntity polysemantNamedEntity : word.getPolysemantNamedEntities()) {
 				SemanticGraphVertex subjectVertex = new SemanticGraphVertex();
 				subjectVertex.setWord(word);
 				
@@ -431,8 +431,8 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 	 * @return
 	 */
 	public boolean isInclude(ArrayList<SemanticGraphVertex> semanticGraphVertexs, int index) {
-		for(SemanticGraphVertex semanticGraphVertex : semanticGraphVertexs) {
-			if(semanticGraphVertex.getWord().getPosition() == index) {
+		for (SemanticGraphVertex semanticGraphVertex : semanticGraphVertexs) {
+			if (semanticGraphVertex.getWord().getPosition() == index) {
 				return true;
 			}
 		}
@@ -465,14 +465,14 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 		// 断言集合
 		SemanticGraphVO semanticGraphVO = new SemanticGraphVO();
 		// 解析语义图  构造断言
-		for(AnswerStatement queryStatement : queryStatements) {
+		for (AnswerStatement queryStatement : queryStatements) {
 	    		SemanticGraphStatementVO semanticGraphStatementVO = new SemanticGraphStatementVO();
 	    		SemanticGraphNodeVO subject = new SemanticGraphNodeVO();
 	    		SemanticGraphNodeVO predicate = new SemanticGraphNodeVO();
 	    		SemanticGraphNodeVO object = new SemanticGraphNodeVO();
 	    		
 	    		subject.setID(queryStatement.getSubject().getPosition());
-	    		if(queryStatement.getSubject().getName().split(":").length > 1) {
+	    		if (queryStatement.getSubject().getName().split(":").length > 1) {
 	    			subject.setName(queryStatement.getSubject().getName().split(":")[1]);
 	    		} else {
 	    			subject.setName(queryStatement.getSubject().getName().split(":")[0]);
@@ -517,8 +517,8 @@ public class SemanticGraphServiceImpl implements SemanticGraphServiceI {
 		word.setName(coNLLWord.LEMMA);
 		word.setCpostag(coNLLWord.CPOSTAG);
 		word.setPostag(coNLLWord.POSTAG);
-		for(PolysemantNamedEntity polysemantNamedEntity : polysemantNamedEntities) {
-			if(polysemantNamedEntity.getPosition() == word.getPosition()) {
+		for (PolysemantNamedEntity polysemantNamedEntity : polysemantNamedEntities) {
+			if (polysemantNamedEntity.getPosition() == word.getPosition()) {
 				wordPolysemantNamedEntities.add(polysemantNamedEntity);
 			}
 		}

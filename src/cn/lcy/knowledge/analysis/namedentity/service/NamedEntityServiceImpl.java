@@ -33,9 +33,9 @@ public class NamedEntityServiceImpl implements NamedEntityServiceI {
 	 * @return
 	 */
 	public static NamedEntityServiceI getInstance() {
-		if(singleInstance == null) {
+		if (singleInstance == null) {
 			synchronized (NamedEntityServiceImpl.class) {
-				if(singleInstance == null) {
+				if (singleInstance == null) {
 					singleInstance = new NamedEntityServiceImpl();
 				}
 			}
@@ -45,7 +45,7 @@ public class NamedEntityServiceImpl implements NamedEntityServiceI {
 	
 	@Override
 	public List<PolysemantNamedEntity> fillNamedEntities(List<PolysemantNamedEntity> polysemantNamedEntities) {
-		for(PolysemantNamedEntity polysemantNameEntity : polysemantNamedEntities) {
+		for (PolysemantNamedEntity polysemantNameEntity : polysemantNamedEntities) {
 			// 先查询其等价实体 避免搜索星爷时 无法正确返回其属性
 			String sameEntityUUID = queryDAO.querySameIndividual(polysemantNameEntity.getUUID());
 			// 得到等价实体名
@@ -55,23 +55,23 @@ public class NamedEntityServiceImpl implements NamedEntityServiceI {
 			
 			Map<String, String> dataProperties = new LinkedHashMap<String, String>();
 			Map<String, String> objectProperties =  new LinkedHashMap<String, String>();
-			if(propertyStatements != null) {
-				while(propertyStatements.hasNext()) {
+			if (propertyStatements != null) {
+				while (propertyStatements.hasNext()) {
 					Statement propertyStatement = propertyStatements.next();
 					String predicateNodeName = propertyStatement.getPredicate().getLocalName();	// 属性名
 					RDFNode objectNode = propertyStatement.getObject();	// 属性值
-					if(predicateNodeName.equals("有picSrc")) {
+					if (predicateNodeName.equals("有picSrc")) {
 						polysemantNameEntity.setPicSrc(objectNode.toString());	// 设置图片Src
 					}
-					if(predicateNodeName.equals("有描述")) {
+					if (predicateNodeName.equals("有描述")) {
 						polysemantNameEntity.setLemmaSummary(objectNode.toString());	// 设置描述
 					}
-					if(objectNode.isLiteral()) { // 数据属性
+					if (objectNode.isLiteral()) { // 数据属性
 						dataProperties.put(predicateNodeName, objectNode.toString());
 					} else {
 						String objectNodeValue = objectNode.toString().split("#")[1];
 						String objectName = null;
-						if(!StringHandle.isIncludeChinese(objectNodeValue) && objectNodeValue.length() == 32) // 该属性值不是中文且字符长度为32  则表示UUID
+						if (!StringHandle.isIncludeChinese(objectNodeValue) && objectNodeValue.length() == 32) // 该属性值不是中文且字符长度为32  则表示UUID
 							objectName = queryDAO.queryIndividualComment(objectNodeValue);
 						else 
 							objectName = objectNodeValue;
