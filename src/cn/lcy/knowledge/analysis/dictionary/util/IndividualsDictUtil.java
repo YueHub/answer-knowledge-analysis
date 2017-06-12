@@ -90,12 +90,12 @@ public class IndividualsDictUtil {
      */
     public static boolean createIndividualDict(OntologyClassEnum ontologyClass, List<String> contents) {
     	// 如果是属于人的话 则添加到人物词典中
-    	if(ontologyClass == OntologyClassEnum.CHARACTER) {
+    	if (ontologyClass == OntologyClassEnum.CHARACTER) {
     		String fileName = "人物词典.txt";
     		String filePath = CUSTOMDICTDIR + fileName;
     		return FileIOUtil.appendContent(filePath, contents);
     	}
-    	if(ontologyClass == OntologyClassEnum.MOVIE) {
+    	if (ontologyClass == OntologyClassEnum.MOVIE) {
     		String fileName = "电影词典.txt";
     		String filePath = CUSTOMDICTDIR + fileName;
     		return FileIOUtil.appendContent(filePath, contents);

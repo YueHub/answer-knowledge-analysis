@@ -50,7 +50,7 @@ public class DictionaryDAOImpl implements DictionaryDAOI {
         ResultSet results = qexec.execSelect();
         ResultSetRewindable resultSetRewindable = ResultSetFactory.makeRewindable(results);
         int numCols = resultSetRewindable.getResultVars().size();
-        while(resultSetRewindable.hasNext()) {
+        while (resultSetRewindable.hasNext()) {
         	QuerySolution querySolution = resultSetRewindable.next();
         	for (int col = 0; col < numCols;col++) {
 	        	String rVar = results.getResultVars().get(col);
