@@ -17,7 +17,7 @@ import cn.lcy.knowledge.analysis.sem.model.WordSegmentResult;
 
 public class WordSegmentationServiceImpl implements WordSegmentationServiceI {
 	
-	// 以生省内存的方式读取Answer_Dict词典
+	// 以省内存的方式读取 Answer_Dict 词典
 	LinkedList<String> dictIndividualList = IOUtil.readLineListWithLessMemory(Config.individualDictPath);
 	
 	private volatile static WordSegmentationServiceI singleInstance;
@@ -42,7 +42,7 @@ public class WordSegmentationServiceImpl implements WordSegmentationServiceI {
 	}
 	
 	/**
-	 * HanLP分词以及命名实体识别
+	 * HanLP 分词以及命名实体识别
 	 */
 	@Override
 	public WordSegmentResult wordSegmentation(String question) {

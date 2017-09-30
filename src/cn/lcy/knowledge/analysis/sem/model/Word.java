@@ -120,7 +120,7 @@ public class Word implements java.io.Serializable {
 	/**
 	 * 获取激活的等价实体
 	 */
-	public PolysemantNamedEntity getActiveEntity() {
+	public PolysemantNamedEntity acquireActiveEntity() {
 		PolysemantNamedEntity polysemantNamedEntityRet = null;
 		for(PolysemantNamedEntity polysemantNamedEntity : polysemantNamedEntities) {
 			if(polysemantNamedEntity.isActive()) {

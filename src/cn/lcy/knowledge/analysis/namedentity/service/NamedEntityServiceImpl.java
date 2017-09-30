@@ -44,7 +44,7 @@ public class NamedEntityServiceImpl implements NamedEntityServiceI {
 	}
 	
 	@Override
-	public List<PolysemantNamedEntity> fillNamedEntities(List<PolysemantNamedEntity> polysemantNamedEntities) {
+	public boolean fillNamedEntities(List<PolysemantNamedEntity> polysemantNamedEntities) {
 		for (PolysemantNamedEntity polysemantNameEntity : polysemantNamedEntities) {
 			// 先查询其等价实体 避免搜索星爷时 无法正确返回其属性
 			String sameEntityUUID = queryDAO.querySameIndividual(polysemantNameEntity.getUUID());
@@ -82,6 +82,6 @@ public class NamedEntityServiceImpl implements NamedEntityServiceI {
 			polysemantNameEntity.setDataProperties(dataProperties);
 			polysemantNameEntity.setObjectProperties(objectProperties);
 		}
-		return polysemantNamedEntities;
+		return true;
 	}
 }

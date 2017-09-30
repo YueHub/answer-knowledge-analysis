@@ -11,7 +11,7 @@ public interface NamedEntityServiceI {
 	 * @param namedEntity
 	 * @return
 	 */
-	public List<PolysemantNamedEntity> fillNamedEntities(List<PolysemantNamedEntity> namedEntity);
+	public boolean fillNamedEntities(List<PolysemantNamedEntity> namedEntity);
 	
 	
 }

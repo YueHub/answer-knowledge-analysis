@@ -93,6 +93,12 @@ public class QueryServiceImpl implements QueryServiceI {
 		return answerStatements;
 	}
 	
+	/**
+	 * 使用笛卡尔积算法获取因为同名实体而造成的所有歧义可能
+	 * 假设原始断言为 x-y, y-z, z-?answer,
+	 * 其中 假设 x 有 m 种同名实体, y 有 n 种同名实体, z 有 k 种同名实体,
+	 * 则共有 m * n * k 种歧义可能.
+	 */
 	@Override
 	public List<PolysemantStatement> createPolysemantStatements(List<AnswerStatement> answerStatements)	{
 		List<PolysemantStatement> polysemantStatements = new ArrayList<PolysemantStatement>();
@@ -145,7 +151,6 @@ public class QueryServiceImpl implements QueryServiceI {
 					BeanUtils.copyProperties(predicateNew, predicate);
 					BeanUtils.copyProperties(objectNew, object);
 				} catch (IllegalAccessException | InvocationTargetException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -155,7 +160,6 @@ public class QueryServiceImpl implements QueryServiceI {
 					try {
 						BeanUtils.copyProperties(polysemantNamedEntityNew, polysemantNamedEntity);
 					} catch (IllegalAccessException | InvocationTargetException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					subjectPolysemantNamedEntities.add(polysemantNamedEntityNew);
@@ -176,7 +180,6 @@ public class QueryServiceImpl implements QueryServiceI {
 					try {
 						BeanUtils.copyProperties(polysemantNamedEntityNew, polysemantNamedEntity);
 					} catch (IllegalAccessException | InvocationTargetException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					objectPolysemantNamedEntities.add(polysemantNamedEntityNew);
@@ -242,7 +245,7 @@ public class QueryServiceImpl implements QueryServiceI {
     	for (AnswerStatement individualsDisambiguationStatement : answerStatements) {
     		
     		
-    		if (individualsDisambiguationStatement.getSubject().getActiveEntity() != null) {
+    		if (individualsDisambiguationStatement.getSubject().acquireActiveEntity() != null) {
     			// 如果主语是问号的话 就不需要进行实体消岐了
         		if (individualsDisambiguationStatement.getSubject().getPosition() < 1024) {
     	    		// 查询本体库中是否有该实体
@@ -254,13 +257,13 @@ public class QueryServiceImpl implements QueryServiceI {
     				
     				String individualDisambiguationName = null;
     				String sameEntityUUID = null;
-    				if (individualsDisambiguationStatement.getSubject().getActiveEntity() != null) {
-    					if (individualsDisambiguationStatement.getSubject().getActiveEntity().getIsAliases().equals("0")) { // 如果该实体为实体别名
-    						sameEntityUUID = queryDAO.querySameIndividual(individualsDisambiguationStatement.getSubject().getActiveEntity().getUUID());
+    				if (individualsDisambiguationStatement.getSubject().acquireActiveEntity() != null) {
+    					if (individualsDisambiguationStatement.getSubject().acquireActiveEntity().getIsAliases().equals("0")) { // 如果该实体为实体别名
+    						sameEntityUUID = queryDAO.querySameIndividual(individualsDisambiguationStatement.getSubject().acquireActiveEntity().getUUID());
     					}
     					
     				}
-    				String entityUUID = sameEntityUUID == null ? individualsDisambiguationStatement.getSubject().getActiveEntity().getUUID() : sameEntityUUID;
+    				String entityUUID = sameEntityUUID == null ? individualsDisambiguationStatement.getSubject().acquireActiveEntity().getUUID() : sameEntityUUID;
     				
     				individualDisambiguationName = queryDAO.queryIndividualComment(entityUUID);	// TODO 修改为注入 本体库中的comment表示该实体的实体名
     				individualsDisambiguationStatement.getSubject().setDisambiguationName(individualDisambiguationName);

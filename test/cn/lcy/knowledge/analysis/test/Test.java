@@ -38,14 +38,14 @@ public class Test {
 		QueryServiceI queryService = QueryServiceImpl.getInstance();
 		
 		// 第一步：HanLP分词
-		WordSegmentResult wordSegmentResult = wordSegmentationService.wordSegmentation("美人鱼的导演是谁？");
+		WordSegmentResult wordSegmentResult = wordSegmentationService.wordSegmentation("美人鱼？");
 		List<Term> terms = wordSegmentResult.getTerms();
 		List<PolysemantNamedEntity> polysemantNamedEntities = wordSegmentResult.getPolysemantEntities();
 		List<Word> words = wordSegmentResult.getWords();
 		System.out.println("HanLP分词的结果为:"+terms);
 		
 		// :查询本体库、取出命名实体的相关数据属性和对象属性
-		polysemantNamedEntities = namedEntityService.fillNamedEntities(polysemantNamedEntities);
+		namedEntityService.fillNamedEntities(polysemantNamedEntities);
 		
 		// 第二步：使用HanLP进行依存句法分析
 		CoNLLSentence coNLLsentence = grammarParserService.dependencyParser(terms);
@@ -169,8 +169,8 @@ public class Test {
 			List<PolysemantNamedEntity> activePolysemantNamedEntities = new ArrayList<PolysemantNamedEntity>();
 			int index = 0;
 			for(AnswerStatement answerStatementNew : polysemantStatement.getAnswerStatements()) {
-				PolysemantNamedEntity subjectActivePolysemantNamedEntity = answerStatementNew.getSubject().getActiveEntity();
-				PolysemantNamedEntity objectActivePolysemantNamedEntity = answerStatementNew.getObject().getActiveEntity();
+				PolysemantNamedEntity subjectActivePolysemantNamedEntity = answerStatementNew.getSubject().acquireActiveEntity();
+				PolysemantNamedEntity objectActivePolysemantNamedEntity = answerStatementNew.getObject().acquireActiveEntity();
 				if(index == 0) {
 					activePolysemantNamedEntities.add(subjectActivePolysemantNamedEntity);
 					activePolysemantNamedEntities.add(objectActivePolysemantNamedEntity);
