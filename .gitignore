@@ -3,3 +3,8 @@
 .project
 /bin/
 /target/
+
+/.idea/workspace.xml
+/.idea/libraries
+/classes
+answer-knowledge-analysis.iml

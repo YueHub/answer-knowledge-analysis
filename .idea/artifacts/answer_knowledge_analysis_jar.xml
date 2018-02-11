@@ -1,0 +1,55 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="answer-knowledge-analysis:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/answer_knowledge_analysis_jar</output-path>
+    <root id="archive" name="answer-knowledge-analysis.jar">
+      <element id="module-output" name="answer-knowledge-analysis" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/com/github/jsonld-java/jsonld-java/0.8.3/jsonld-java-0.8.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/commons-beanutils/commons-beanutils/1.9.3/commons-beanutils-1.9.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/redis/clients/jedis/2.0.0/jedis-2.0.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/springframework/spring-core/3.1.2.RELEASE/spring-core-3.1.2.RELEASE.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/apache/httpcomponents/httpclient/4.3.3/httpclient-4.3.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/commons-codec/commons-codec/1.6/commons-codec-1.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/springframework/spring-beans/3.1.2.RELEASE/spring-beans-3.1.2.RELEASE.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/slf4j/jcl-over-slf4j/1.7.21/jcl-over-slf4j-1.7.21.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/apache/httpcomponents/httpclient-cache/4.5.2/httpclient-cache-4.5.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/aspectj/aspectjweaver/1.8.5/aspectjweaver-1.8.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/commons-logging/commons-logging/1.2/commons-logging-1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/xerces/xercesImpl/2.11.0/xercesImpl-2.11.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/slf4j/slf4j-log4j12/1.7.6/slf4j-log4j12-1.7.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/apache/commons/commons-csv/1.3/commons-csv-1.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/us/codecraft/webmagic-extension/0.5.3/webmagic-extension-0.5.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/us/codecraft/xsoup/0.3.1/xsoup-0.3.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/com/jayway/jsonpath/json-path/0.8.1/json-path-0.8.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/com/google/guava/guava/20.0/guava-20.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/log4j/log4j/1.2.17/log4j-1.2.17.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/com/alibaba/fastjson/1.1.24/fastjson-1.1.24.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/edu/stanford/nlp/stanford-parser/3.6.0/stanford-parser-3.6.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/net/minidev/json-smart/1.1.1/json-smart-1.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/commons-pool/commons-pool/1.5.5/commons-pool-1.5.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/com/github/andrewoma/dexx/collection/0.6/collection-0.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/slf4j/slf4j-api/1.7.6/slf4j-api-1.7.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/com/fasterxml/jackson/core/jackson-annotations/2.7.0/jackson-annotations-2.7.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/apache/jena/jena-arq/3.1.1/jena-arq-3.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/apache/jena/jena-shaded-guava/3.1.1/jena-shaded-guava-3.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/us/codecraft/webmagic-core/0.5.3/webmagic-core-0.5.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/apache/jena/jena-iri/3.1.1/jena-iri-3.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/commons-cli/commons-cli/1.3/commons-cli-1.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/com/fasterxml/jackson/core/jackson-databind/2.7.4/jackson-databind-2.7.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/xml-apis/xml-apis/1.4.01/xml-apis-1.4.01.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/apache/jena/jena-core/3.1.1/jena-core-3.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/springframework/spring-asm/3.1.2.RELEASE/spring-asm-3.1.2.RELEASE.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/apache/thrift/libthrift/0.9.3/libthrift-0.9.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/com/hankcs/hanlp/portable-1.3.1/hanlp-portable-1.3.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/com/googlecode/efficient-java-matrix-library/ejml/0.23/ejml-0.23.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/commons-io/commons-io/1.3.2/commons-io-1.3.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/apache/jena/jena-base/3.1.1/jena-base-3.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/com/fasterxml/jackson/core/jackson-core/2.7.4/jackson-core-2.7.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/assertj/assertj-core/1.5.0/assertj-core-1.5.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../软件一区/IT/Programming/Tools/Maven/repos/org/jsoup/jsoup/1.8.3/jsoup-1.8.3.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

@@ -1,4 +1,4 @@
-package cn.lcy.knowledge.analysis.test;
+package cn.lcy.knowledge.analysis;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import cn.lcy.knowledge.analysis.sem.model.SemanticGraph;
 import cn.lcy.knowledge.analysis.sem.model.Word;
 import cn.lcy.knowledge.analysis.sem.model.WordSegmentResult;
 
-public class Test {
+public class Main {
 	
 	public static void main(String args[]) {
 		
@@ -38,7 +38,7 @@ public class Test {
 		QueryServiceI queryService = QueryServiceImpl.getInstance();
 		
 		// 第一步：HanLP分词
-		WordSegmentResult wordSegmentResult = wordSegmentationService.wordSegmentation("美人鱼？");
+		WordSegmentResult wordSegmentResult = wordSegmentationService.wordSegmentation("美人鱼的导演？");
 		List<Term> terms = wordSegmentResult.getTerms();
 		List<PolysemantNamedEntity> polysemantNamedEntities = wordSegmentResult.getPolysemantEntities();
 		List<Word> words = wordSegmentResult.getWords();

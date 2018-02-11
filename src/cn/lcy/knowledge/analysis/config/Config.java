@@ -1,6 +1,7 @@
 package cn.lcy.knowledge.analysis.config;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 import org.apache.jena.ontology.OntModel;
@@ -27,6 +28,11 @@ public class Config {
 	 * 本体标识
 	 */
 	public static String pizzaNs;
+
+    /**
+     * 是否使用默认数据源
+     */
+	public static String defaultDataSource;
 	
 	/**
 	 * 根路径
@@ -43,11 +49,6 @@ public class Config {
 	 */
 	public static String individualDictPath;
 	
-	/**
-	 * 图片保存地址
-	 */
-	public static String picSavePath;
-	
 	public static OntModel model;
 	
 	public static Model loadModel;
@@ -61,14 +62,24 @@ public class Config {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		pizzaNs = properties.getProperty("pizzaNs").toString();
-		
-		rootPath = properties.getProperty("rootPath").toString(); 
-		ontologyPath = rootPath + properties.get("ontologyPath").toString();
-		individualDictPath = rootPath + properties.get("individualDictPath").toString();
-		picSavePath = rootPath + properties.getProperty("picSavePath");
-		model = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM );
-		loadModel = FileManager.get().readModel(model, Config.ontologyPath);
+        defaultDataSource = properties.getProperty("defaultDataSource").toString();
+        if ("true".equals(defaultDataSource)) {
+            try {
+                ontologyPath = Thread.currentThread().getContextClassLoader().getResource("").toURI().getPath().toString() + "data/Ontologies/Answer_Ontology_V2.owl";
+                individualDictPath = Thread.currentThread().getContextClassLoader().getResource("").toURI().getPath().toString() + "data/AnswerDict/Answer_Dict.txt";
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        } else {
+            rootPath = properties.getProperty("rootPath").toString();
+            ontologyPath = rootPath + properties.get("ontologyPath").toString();
+            individualDictPath = rootPath + properties.get("individualDictPath").toString();
+        }
+
+		 model = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM );
+		 loadModel = FileManager.get().readModel(model, Config.ontologyPath);
 	}
 	
 	/**
