@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="answer-knowledge-analysis" target="1.8" />
+      <module name="answer-knowledge-analysis" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

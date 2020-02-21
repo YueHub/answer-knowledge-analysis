@@ -13,57 +13,57 @@ import org.apache.jena.util.FileManager;
 import cn.lcy.knowledge.analysis.util.Configuration;
 
 public class Config {
-	
-	/**
-	 * 配置文件名
-	 */
-	public static final String PROPERTY_FILE = "knowledge-analysis.properties";
-	
-	/**
-	 * 配置
-	 */
-	public static Properties properties;
-	
-	/**
-	 * 本体标识
-	 */
-	public static String pizzaNs;
+
+    /**
+     * 配置文件名
+     */
+    public static final String PROPERTY_FILE = "knowledge-analysis.properties";
+
+    /**
+     * 配置
+     */
+    public static Properties properties;
+
+    /**
+     * 本体标识
+     */
+    public static String pizzaNs;
 
     /**
      * 是否使用默认数据源
      */
-	public static String defaultDataSource;
-	
-	/**
-	 * 根路径
-	 */
-	public static String rootPath;
-	
-	/**
-	 * 本体文件路径
-	 */
-	public static String ontologyPath;
-	
-	/**
-	 * 实体词典路径
-	 */
-	public static String individualDictPath;
-	
-	public static OntModel model;
-	
-	public static Model loadModel;
-	
-	/**
-	 * 读取配置
-	 */
-	static {
-		try {
-			properties = Configuration.propertiesLoader(PROPERTY_FILE);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    public static String defaultDataSource;
 
-		pizzaNs = properties.getProperty("pizzaNs").toString();
+    /**
+     * 根路径
+     */
+    public static String rootPath;
+
+    /**
+     * 本体文件路径
+     */
+    public static String ontologyPath;
+
+    /**
+     * 实体词典路径
+     */
+    public static String individualDictPath;
+
+    public static OntModel model;
+
+    public static Model loadModel;
+
+    /**
+     * 读取配置
+     */
+    static {
+        try {
+            properties = Configuration.propertiesLoader(PROPERTY_FILE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        pizzaNs = properties.getProperty("pizzaNs").toString();
         defaultDataSource = properties.getProperty("defaultDataSource").toString();
         if ("true".equals(defaultDataSource)) {
             try {
@@ -78,16 +78,15 @@ public class Config {
             individualDictPath = rootPath + properties.get("individualDictPath").toString();
         }
 
-		 model = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM );
-		 loadModel = FileManager.get().readModel(model, Config.ontologyPath);
-	}
-	
-	/**
-	 * 配置类 不需要生成实例
-	 */
-	private Config() {}
-	
-	
-	
+        model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
+        loadModel = FileManager.get().readModel(model, Config.ontologyPath);
+    }
+
+    /**
+     * 配置类 不需要生成实例
+     */
+    private Config() {
+    }
+
 
 }

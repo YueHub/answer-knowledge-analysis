@@ -4,35 +4,35 @@ import cn.lcy.knowledge.analysis.enums.AnswerTypeEnum;
 
 public class Answer implements java.io.Serializable {
 
-	/**
-	 * default serial version ID
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * default serial version ID
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 答案类型
-	 */
-	private AnswerTypeEnum type;
-	
-	/**
-	 * 答案内容
-	 */
-	private String content;
+    /**
+     * 答案类型
+     */
+    private AnswerTypeEnum type;
 
-	public AnswerTypeEnum getType() {
-		return type;
-	}
+    /**
+     * 答案内容
+     */
+    private String content;
 
-	public void setType(AnswerTypeEnum type) {
-		this.type = type;
-	}
-	
-	public String getContent() {
-		return content;
-	}
+    public AnswerTypeEnum getType() {
+        return type;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
-	
+    public void setType(AnswerTypeEnum type) {
+        this.type = type;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
 }

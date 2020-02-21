@@ -7,6 +7,6 @@ import com.hankcs.hanlp.seg.common.Term;
 
 public interface GrammarParserServiceI {
 
-	public CoNLLSentence dependencyParser(List<Term> terms);
-	
+    public CoNLLSentence dependencyParser(List<Term> terms);
+
 }
